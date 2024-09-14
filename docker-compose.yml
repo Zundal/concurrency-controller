@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   redis:
     image: redis:latest
@@ -32,7 +30,9 @@ services:
       - concurrency-network
 
   app1:
-    image: concurrency
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: app1-concurrency
     depends_on:
       - redis
@@ -44,7 +44,9 @@ services:
       - concurrency-network
 
   app2:
-    image: concurrency
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: app2-concurrency
     depends_on:
       - redis

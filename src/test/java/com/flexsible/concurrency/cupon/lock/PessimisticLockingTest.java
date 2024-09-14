@@ -1,4 +1,4 @@
-package com.flexsible.concurrency.cupon.domain;
+package com.flexsible.concurrency.cupon.lock;
 
 import com.flexsible.concurrency.coupon.domain.entity.Coupon;
 import com.flexsible.concurrency.coupon.persistant.CouponRepository;
@@ -10,16 +10,19 @@ import org.springframework.dao.OptimisticLockingFailureException;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.time.Duration;
+
 @SpringBootTest
-public class OptimisticLockingTest {
+public class PessimisticLockingTest {
 
     @Autowired
     private CouponRepository couponRepository;
 
     @BeforeEach
     void setUp() {
-        // Prepare test data with versioning
+        // Prepare test data
         Coupon coupon = Coupon.builder()
+                .id("test-coupon-id")
                 .name("Test Coupon")
                 .code("TESTCODE")
                 .type("DISCOUNT")
@@ -30,8 +33,7 @@ public class OptimisticLockingTest {
     }
 
     @Test
-    void testOptimisticLocking() {
-
+    void testPessimisticLocking() {
         Mono<Void> update1 = couponRepository.findById("test-coupon-id")
                 .flatMap(coupon -> {
                     Coupon updatedCoupon = Coupon.builder()
@@ -41,7 +43,8 @@ public class OptimisticLockingTest {
                             .type(coupon.getType())
                             .limitedQuantity(150)
                             .build();
-                    return couponRepository.save(updatedCoupon);
+                    return Mono.delay(Duration.ofSeconds(5))
+                            .then(couponRepository.save(updatedCoupon));
                 })
                 .then();
 

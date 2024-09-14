@@ -1,0 +1,33 @@
+spring:
+  r2dbc:
+    url: r2dbc:mariadb://localhost:3309/service
+    username: root
+    password: password
+    pool:
+      enabled: true
+      max-size: 20        # ?? ?? ?
+      initial-size: 10    # ?? ?? ?
+      max-idle-time: 30s  # ???? ?? ??? ???? ?? ??
+      max-create-connection-time: 30s  # ??? ???? ? ???? ?? ??
+      validation-query: SELECT 1  # ?? ??? ??? ??
+
+  redis:
+    host: localhost
+    port: 6379
+    password: ""
+    lettuce:
+      pool:
+        max-active: 8
+        max-idle: 8
+        min-idle: 0
+      shutdown-timeout: 100ms
+    repositories:
+      enabled: false
+
+  logging:
+    level:
+      org.springframework.r2dbc: DEBUG
+      org.springframework.data: DEBUG
+      org.springframework.r2dbc.connection: DEBUG
+      org.mariadb: DEBUG
+

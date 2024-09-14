@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  redis:
+    image: redis:latest
+    container_name: redis-concurrency
+    ports:
+      - "6379:6379"
+    networks:
+      - concurrency-network
+
+  maria1:
+    image: mariadb:latest
+    container_name: mariadb1-concurrency
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: service
+    ports:
+      - "3309:3306"
+    networks:
+      - concurrency-network
+
+  maria2:
+    image: mariadb:latest
+    container_name: mariadb2-concurrency
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: service
+    ports:
+      - "3310:3306"
+    networks:
+      - concurrency-network
+
+  app1:
+    image: concurrency
+    container_name: app1-concurrency
+    depends_on:
+      - redis
+      - maria1
+      - maria2
+    ports:
+      - "8081:8080"
+    networks:
+      - concurrency-network
+
+  app2:
+    image: concurrency
+    container_name: app2-concurrency
+    depends_on:
+      - redis
+      - maria1
+      - maria2
+    ports:
+      - "8082:8080"
+    networks:
+      - concurrency-network
+
+networks:
+  concurrency-network:
+    driver: bridge

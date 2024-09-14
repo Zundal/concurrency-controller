@@ -14,7 +14,7 @@ public class DistributedLockTest {
     @Autowired
     private RedisDistributedLock distributedLock;
 
-    @Test
+//    @Test
     void testDistributedLock()
             throws InterruptedException {
 

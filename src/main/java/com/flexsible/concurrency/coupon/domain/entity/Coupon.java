@@ -2,6 +2,7 @@ package com.flexsible.concurrency.coupon.domain.entity;
 
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Version;
 import org.springframework.data.relational.core.mapping.Table;
 
 @Getter
@@ -22,4 +23,7 @@ public class Coupon {
     private String type;
 
     private Integer limitedQuantity;
+
+    @Version
+    private Long version;
 }

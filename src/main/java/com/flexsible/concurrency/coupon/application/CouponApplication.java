@@ -52,7 +52,6 @@ public class CouponApplication implements CouponUseCase {
     @Override
     public Mono<Void> deleteCoupon(String id) {
         return couponPort.deleteCoupon(id);
-
     }
 
     @Override

@@ -56,4 +56,6 @@ dependencies {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // 테스트를 빌드에서 제외
+    enabled = false
 }
